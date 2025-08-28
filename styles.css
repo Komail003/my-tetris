@@ -1,0 +1,295 @@
+:root {
+  --bg: #141f39;
+  --panel: #10408c;
+  --accent: #00e5ff;
+  --accent-2: #ff2bd6;
+  --sand: #f5d76e;
+  --piece: #7ee0ff;
+  --glass: rgb(249, 7, 7);
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: radial-gradient(
+    800px 400px at 10% 10%,
+    #141f39 0%,
+    var(--bg) 60%
+  );
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.wrap {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.panel {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* layout */
+.game-shell {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  max-width: 1100px;
+  width: 100%;
+}
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 auto;
+}
+#game {
+  border-radius: 10px;
+  display: block;
+  background: linear-gradient(180deg, #031024, #041028);
+  box-shadow: inset 0 10px 40px rgba(0, 0, 0, 0.6);
+  /* visual size is controlled by JS; keep responsive fallback */
+  width: 100%;
+  height: auto;
+  max-height: 75vh;
+}
+
+/* CRT overlay */
+.crt {
+  position: relative;
+}
+.crt:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.01) 0 2px,
+    transparent 3px 5px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* canvas container sizing (keeps aspect while giving room for controls) */
+.canvas-wrap {
+  height: 80vh;
+  max-height: 880px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 8px;
+}
+
+/* HUD */
+.hud {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  color: #dff8ff;
+  width: 260px;
+  flex: 0 0 260px;
+}
+.stat {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  min-width: 220px;
+}
+.stat .label {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.stat .value {
+  font-family: Orbitron, monospace;
+  font-size: 20px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.btn-arc {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 229, 255, 0.08),
+    rgba(255, 43, 214, 0.03)
+  );
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  color: #bfefff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* title */
+.title {
+  font-family: Orbitron, sans-serif;
+  color: #bfefff;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.18);
+}
+
+/* little neon badges */
+.badge-neo {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 229, 255, 0.06),
+    rgba(255, 43, 214, 0.04)
+  );
+  border: 1px solid rgba(0, 229, 255, 0.12);
+  color: #dff8ff;
+}
+
+/* legend */
+.legend {
+  color: #a9dfff;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.game-stats {
+  display: flex;
+  width: 100%;
+}
+
+/* TOUCH CONTROLS */
+.touch-controls {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 70%);
+  bottom: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  z-index: 40;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+.touch-btn {
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--piece);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  touch-action: manipulation;
+}
+.touch-btn.big {
+  min-width: 64px;
+  min-height: 64px;
+  font-size: 20px;
+}
+
+/* small-screen layout: stack HUD under canvas, make HUD full-width */
+@media (max-width: 900px) {
+  .game-shell {
+    flex-direction: column;
+    align-items: center;
+  }
+  .stat {
+    min-width: unset;
+    width: 100%;
+  }
+  .hud {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .canvas-wrap {
+    height: auto;
+    max-height: 72vh;
+    padding-bottom: 82px; /* space for touch controls */
+  }
+  .touch-controls {
+    display: flex;
+    margin-top: 250px !important;
+  }
+}
+
+/* hide touch controls on large screens for cleanliness */
+@media (min-width: 901px) {
+  .touch-controls {
+    display: none;
+  }
+}
+
+/* very small/mobile */
+@media (max-width: 420px) {
+  .touch-controls {
+    bottom: 10px;
+    gap: 8px;
+    padding: 6px;
+  }
+  .touch-btn {
+    min-width: 46px;
+    min-height: 46px;
+    font-size: 17px;
+  }
+  .touch-btn.big {
+    min-width: 56px;
+    min-height: 56px;
+  }
+  .controls .btn-arc {
+    min-height: 44px;
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+/* accessibility: focus states for keyboard users */
+.touch-btn:focus,
+.btn-arc:focus {
+  outline: 2px solid rgba(126, 224, 255, 0.25);
+  outline-offset: 2px;
+}
+
+/* small visual tweak for next canvas inside hud */
+#next {
+  border-radius: 6px;
+  background: linear-gradient(180deg, #031424, #021218);
+}
+
+/* keep legend smaller on tiny phones */
+@media (max-width: 360px) {
+  .legend {
+    font-size: 11px;
+  }
+}
